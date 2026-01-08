@@ -1,0 +1,31 @@
+<ion-app>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>myTasks</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item routerLink="/projects" routerDirection="root">
+            <ion-icon slot="start" name="folder-open-outline"></ion-icon>
+            <ion-label>Projetos</ion-label>
+          </ion-item>
+          <ion-item routerLink="/categories" routerDirection="forward">
+            <ion-icon slot="start" name="pricetags-outline"></ion-icon>
+            <ion-label>Categorias</ion-label>
+          </ion-item>
+          <ion-item routerLink="/calendar" routerDirection="forward">
+            <ion-icon slot="start" name="calendar-outline"></ion-icon>
+            <ion-label>Calendário</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="app-shell" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+</ion-app>

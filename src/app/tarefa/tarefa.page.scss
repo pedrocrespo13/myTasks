@@ -1,0 +1,46 @@
+.project-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+}
+
+.form-card {
+  box-shadow: var(--card-shadow);
+  border-radius: var(--radius-lg);
+
+  .form-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  .form-actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+}
+
+.task-list {
+  margin-top: 12px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.completed h2 {
+  text-decoration: line-through;
+  color: var(--ion-color-medium);
+}
+

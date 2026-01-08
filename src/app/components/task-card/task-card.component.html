@@ -1,0 +1,42 @@
+<ion-card class="project-card">
+  <ion-card-header>
+    <ion-chip [style.--background]="category?.color || 'var(--ion-color-primary)'" class="category-chip">
+      <ion-icon [name]="category?.icon || 'albums-outline'"></ion-icon>
+      <ion-label>{{ category?.name || 'Sem categoria' }}</ion-label>
+    </ion-chip>
+    <ion-card-title>{{ project.name }}</ion-card-title>
+    <ion-card-subtitle>{{ project.description }}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="stats">
+      <div>
+        <ion-icon name="list-outline"></ion-icon>
+        <span>{{ tasks.length }} tarefas</span>
+      </div>
+      <div>
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span>{{ completedCount }} concluídas</span>
+      </div>
+      <div [class.alert]="overdueCount > 0">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span>{{ overdueCount }} atrasadas</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <ion-button fill="solid" size="small" (click)="onViewTasks()">
+        <ion-icon slot="start" name="eye-outline"></ion-icon>
+        Abrir
+      </ion-button>
+      <ion-button fill="outline" color="medium" size="small" (click)="onEdit()">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Editar
+      </ion-button>
+      <ion-button fill="clear" color="danger" size="small" (click)="onDelete()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Apagar
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

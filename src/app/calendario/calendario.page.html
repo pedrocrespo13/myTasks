@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Calendário</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Selecionar dia</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-datetime
+        presentation="date"
+        [value]="selectedDate"
+        (ionChange)="onDateChange($event)"
+      ></ion-datetime>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list *ngIf="calendarTasks$ | async as entries">
+    <ion-list-header>
+      <ion-label>Tarefas no dia ({{ entries.length }})</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngIf="entries.length === 0">
+      <ion-label>Nada agendado para este dia.</ion-label>
+    </ion-item>
+
+    <ion-item-sliding *ngFor="let entry of entries">
+      <ion-item>
+        <ion-icon slot="start" name="clipboard-outline"></ion-icon>
+        <ion-label>
+          <h2>{{ entry.task.title }}</h2>
+          <p>{{ entry.project.name }} · {{ entry.category?.name }}</p>
+          <p>{{ entry.task.description }}</p>
+        </ion-label>
+        <ion-badge [color]="entry.task.completed ? 'success' : 'warning'">
+          {{ entry.task.priority }}
+        </ion-badge>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="medium" (click)="openEdit(entry)">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          Editar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-modal [isOpen]="!!editingTask" (didDismiss)="cancelEdit()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Editar tarefa</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cancelEdit()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="form-grid">
+          <ion-item>
+            <ion-label position="floating">Título</ion-label>
+            <ion-input formControlName="title"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Descrição</ion-label>
+            <ion-textarea formControlName="description"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Data</ion-label>
+            <ion-datetime-button datetime="calendarEdit"></ion-datetime-button>
+            <ion-modal keepContentsMounted="true">
+              <ng-template>
+                <ion-datetime id="calendarEdit" presentation="date" formControlName="dueDate"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Prioridade</ion-label>
+            <ion-segment formControlName="priority">
+              <ion-segment-button value="low">Baixa</ion-segment-button>
+              <ion-segment-button value="medium">Média</ion-segment-button>
+              <ion-segment-button value="high">Alta</ion-segment-button>
+            </ion-segment>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>Concluída</ion-label>
+            <ion-toggle formControlName="completed"></ion-toggle>
+          </ion-item>
+          <ion-button expand="block" type="submit" color="success">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            Guardar
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+

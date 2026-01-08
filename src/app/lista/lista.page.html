@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear" routerLink="/categories">
+        <ion-icon slot="start" name="pricetags-outline"></ion-icon>
+        Categorias
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Projetos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/calendar">
+        <ion-icon slot="start" name="calendar-outline"></ion-icon>
+        Calendário
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <section class="dashboard">
+    <div class="card highlight" *ngIf="overdue$ | async as overdue">
+      <div>
+        <p class="label">Tarefas atrasadas</p>
+        <h2>{{ overdue.length }}</h2>
+        <p class="muted">Conclua-as para limpar a lista.</p>
+      </div>
+      <ion-icon name="alert-circle-outline"></ion-icon>
+    </div>
+
+    <div class="card form-card">
+      <div class="card-header">
+        <h3>{{ editingId ? 'Editar projeto' : 'Novo projeto' }}</h3>
+        <ion-button size="small" fill="clear" (click)="resetForm()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Limpar
+        </ion-button>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="saveProject()" class="form-grid">
+        <ion-item>
+          <ion-label position="floating">Nome</ion-label>
+          <ion-input formControlName="name" placeholder="Ex: Aplicação Mobile"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Descrição</ion-label>
+          <ion-textarea formControlName="description" auto-grow="true"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Categoria</ion-label>
+          <ion-select interface="action-sheet" formControlName="categoryId" placeholder="Selecione">
+            <ion-select-option *ngFor="let c of (categories$ | async)" [value]="c.id">
+              {{ c.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Cor (hex)</ion-label>
+          <ion-input formControlName="color" placeholder="#0ea5e9"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Estado</ion-label>
+          <ion-segment formControlName="status">
+            <ion-segment-button value="new">Novo</ion-segment-button>
+            <ion-segment-button value="active">Ativo</ion-segment-button>
+            <ion-segment-button value="paused">Pausado</ion-segment-button>
+            <ion-segment-button value="done">Fechado</ion-segment-button>
+          </ion-segment>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" color="success">
+          <ion-icon slot="start" name="save-outline"></ion-icon>
+          {{ editingId ? 'Guardar alterações' : 'Adicionar projeto' }}
+        </ion-button>
+      </form>
+    </div>
+  </section>
+
+  <section class="filters">
+    <p class="label">Filtrar por categoria</p>
+    <ion-segment [value]="filterCategory" (ionChange)="setFilter($event.detail.value)">
+      <ion-segment-button value="all">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        *ngFor="let category of (categories$ | async)"
+        [value]="category.id"
+      >
+        <ion-label>{{ category.name }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </section>
+
+  <section *ngIf="filteredProjects$ | async as projectCards">
+    <p class="label">Projetos ({{ projectCards.length }})</p>
+
+    <div class="cards-grid">
+      <app-task-card
+        *ngFor="let card of projectCards"
+        [project]="card.project"
+        [tasks]="card.tasks"
+        [category]="card.category"
+        (viewTasks)="openTasks($event)"
+        (editProject)="editProject($event)"
+        (deleteProject)="deleteProject($event)"
+      ></app-task-card>
+    </div>
+  </section>
+</ion-content>

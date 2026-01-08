@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ project?.name || 'Tarefas' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="project-meta" *ngIf="project">
+    <div>
+      <p class="label">Categoria</p>
+      <ion-chip *ngIf="category" [style.--background]="category.color">
+        <ion-icon [name]="category.icon"></ion-icon>
+        <ion-label>{{ category.name }}</ion-label>
+      </ion-chip>
+    </div>
+    <div>
+      <p class="label">Estado</p>
+      <ion-badge color="tertiary">{{ project.status }}</ion-badge>
+    </div>
+  </div>
+
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>{{ editingTaskId ? 'Editar tarefa' : 'Nova tarefa' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="taskForm" (ngSubmit)="saveTask()" class="form-grid">
+        <ion-item>
+          <ion-label position="floating">Título</ion-label>
+          <ion-input formControlName="title"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Descrição</ion-label>
+          <ion-textarea formControlName="description" auto-grow="true"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Data limite</ion-label>
+          <ion-datetime-button datetime="taskDue"></ion-datetime-button>
+          <ion-modal keepContentsMounted="true">
+            <ng-template>
+              <ion-datetime id="taskDue" presentation="date" formControlName="dueDate"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Prioridade</ion-label>
+          <ion-segment formControlName="priority">
+            <ion-segment-button value="low">Baixa</ion-segment-button>
+            <ion-segment-button value="medium">Média</ion-segment-button>
+            <ion-segment-button value="high">Alta</ion-segment-button>
+          </ion-segment>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>Concluída</ion-label>
+          <ion-toggle formControlName="completed"></ion-toggle>
+        </ion-item>
+
+        <div class="form-actions">
+          <ion-button type="submit" expand="block" color="success">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            {{ editingTaskId ? 'Guardar' : 'Adicionar' }}
+          </ion-button>
+          <ion-button expand="block" fill="clear" color="medium" (click)="resetForm()">
+            Limpar
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list class="task-list" *ngIf="tasks$ | async as tasks">
+    <ion-list-header>
+      <ion-label>Tarefas ({{ tasks.length }})</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let task of tasks">
+      <ion-item [class.completed]="task.completed">
+        <ion-icon slot="start" name="alarm-outline" [color]="isOverdue(task) ? 'danger' : 'primary'"></ion-icon>
+        <ion-label>
+          <h2>{{ task.title }}</h2>
+          <p>{{ task.description }}</p>
+          <p class="meta">
+            <ion-icon name="calendar-clear-outline"></ion-icon>
+            {{ task.dueDate | date: 'shortDate' }}
+            <ion-badge color="warning" *ngIf="isOverdue(task)">Atrasada</ion-badge>
+          </p>
+        </ion-label>
+        <ion-toggle
+          slot="end"
+          [checked]="task.completed"
+          (ionChange)="toggleTask(task.id)"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="medium" (click)="startEdit(task)">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteTask(task.id)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Remover
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

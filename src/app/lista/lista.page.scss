@@ -1,0 +1,61 @@
+.dashboard {
+  display: grid;
+  gap: 12px;
+}
+
+.card {
+  background: var(--ion-background-color);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(244, 67, 54, 0.25);
+  background: rgba(244, 67, 54, 0.08);
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+  }
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+}
+
+.muted {
+  color: var(--ion-color-medium);
+  margin: 0;
+}
+
+.form-card {
+  .form-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+}
+
+.filters {
+  margin: 16px 0 10px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+

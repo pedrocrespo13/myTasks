@@ -1,0 +1,16 @@
+.form-card {
+  box-shadow: var(--card-shadow);
+  border-radius: var(--radius-lg);
+
+  .form-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  .actions {
+    display: grid;
+    gap: 6px;
+    margin-top: 8px;
+  }
+}
+

@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Categorias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>{{ editingId ? 'Editar categoria' : 'Nova categoria' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="form-grid">
+        <ion-item>
+          <ion-label position="floating">Nome</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Cor (hex)</ion-label>
+          <ion-input formControlName="color"></ion-input>
+          <ion-badge slot="end" [style.background]="categoryForm.value.color">&nbsp;</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Icone (ionicon)</ion-label>
+          <ion-input formControlName="icon"></ion-input>
+        </ion-item>
+        <div class="actions">
+          <ion-button type="submit" expand="block" color="success">
+            <ion-icon slot="start" name="save-outline"></ion-icon>
+            {{ editingId ? 'Guardar' : 'Adicionar' }}
+          </ion-button>
+          <ion-button expand="block" fill="clear" color="medium" (click)="resetForm()">Limpar</ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list *ngIf="categories$ | async as categories">
+    <ion-list-header>
+      <ion-label>Categorias ({{ categories.length }})</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let category of categories">
+      <ion-item>
+        <ion-avatar slot="start" [style.background]="category.color"></ion-avatar>
+        <ion-label>
+          <h2>{{ category.name }}</h2>
+          <p>{{ category.icon }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="medium" (click)="startEdit(category)">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Editar
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteCategory(category.id)">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Apagar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+

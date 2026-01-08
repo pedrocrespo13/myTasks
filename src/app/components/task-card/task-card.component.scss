@@ -1,0 +1,40 @@
+@import '../../../theme/variables.scss';
+
+.project-card {
+  box-shadow: var(--card-shadow);
+  border-radius: var(--radius-lg);
+}
+
+.category-chip {
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  font-size: 0.9rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ion-color-light-shade);
+    padding: 8px;
+    border-radius: var(--radius-md);
+
+    &.alert {
+      color: var(--ion-color-danger);
+      background: rgba(244, 67, 54, 0.08);
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
