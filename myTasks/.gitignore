@@ -56,8 +56,6 @@ yarn-error.log
 # Miscellaneous
 /.angular
 /.angular/cache
-.angular/
-.angular
 .sass-cache/
 /.nx
 /.nx/cache
@@ -70,18 +68,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-
-# Angular specific
-/e2e/test-output/
-/.angular-cli.json
-/.ng/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Environment files
-/.env
-
-# Package lock files (opcional - descomente se não quiser versionar)
-# /package-lock.json
-# /yarn.lock
